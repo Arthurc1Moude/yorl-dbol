@@ -7,7 +7,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&family=Roboto+Mono:wght@400;500&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined" rel="stylesheet">
     <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
     <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
@@ -20,14 +20,14 @@
 
         body {
             font-family: 'Roboto', sans-serif;
-            background: #fafafa;
-            color: #212121;
+            background: #ffffff;
+            color: #202124;
         }
 
         .app-bar {
-            background: #fff;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-            padding: 16px 24px;
+            background: #ffffff;
+            border-bottom: 1px solid #e8eaed;
+            padding: 20px 24px;
             position: sticky;
             top: 0;
             z-index: 100;
@@ -38,121 +38,140 @@
             margin: 0 auto;
             display: flex;
             align-items: center;
-            gap: 16px;
+            gap: 12px;
+        }
+
+        .logo-icon {
+            color: #1a73e8;
+            font-size: 32px;
         }
 
         .logo {
-            font-size: 24px;
-            font-weight: 500;
-            color: #1976d2;
+            font-size: 22px;
+            font-weight: 400;
+            color: #202124;
+            letter-spacing: -0.5px;
         }
 
         .subtitle {
-            color: #757575;
-            font-size: 14px;
+            color: #5f6368;
+            font-size: 13px;
+            font-weight: 400;
         }
 
         .container {
             max-width: 1200px;
             margin: 0 auto;
-            padding: 24px;
+            padding: 32px 24px;
         }
 
         .search-section {
-            background: #fff;
-            border-radius: 24px;
+            background: #ffffff;
+            border-radius: 8px;
             padding: 24px;
-            margin-bottom: 24px;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.12);
+            margin-bottom: 32px;
+            border: 1px solid #e8eaed;
         }
 
         .search-box {
             position: relative;
-            margin-bottom: 16px;
+            margin-bottom: 20px;
         }
 
         .search-input {
             width: 100%;
-            padding: 16px 16px 16px 56px;
+            padding: 14px 14px 14px 48px;
             font-size: 16px;
             font-family: 'Roboto', sans-serif;
-            border: 1px solid #e0e0e0;
-            border-radius: 50px;
-            background: #f5f5f5;
-            transition: all 0.2s;
+            border: 1px solid #dadce0;
+            border-radius: 24px;
+            background: #ffffff;
+            transition: all 0.15s;
+            color: #202124;
         }
 
         .search-input:focus {
             outline: none;
-            background: #fff;
-            border-color: #1976d2;
-            box-shadow: 0 0 0 2px rgba(25, 118, 210, 0.1);
+            border-color: #1a73e8;
+            box-shadow: 0 1px 6px rgba(32,33,36,0.28);
+        }
+
+        .search-input::placeholder {
+            color: #5f6368;
         }
 
         .search-icon {
             position: absolute;
-            left: 20px;
+            left: 16px;
             top: 50%;
             transform: translateY(-50%);
-            color: #757575;
+            color: #5f6368;
+            font-size: 20px;
         }
 
         .filters {
             display: flex;
-            gap: 8px;
+            gap: 12px;
             flex-wrap: wrap;
         }
 
         .chip {
             padding: 8px 16px;
             border-radius: 16px;
-            border: 1px solid #e0e0e0;
-            background: #fff;
+            border: 1px solid #dadce0;
+            background: #ffffff;
             cursor: pointer;
             font-size: 14px;
             font-weight: 500;
-            transition: all 0.2s;
+            transition: all 0.15s;
             display: flex;
             align-items: center;
-            gap: 4px;
+            gap: 6px;
+            color: #5f6368;
         }
 
         .chip:hover {
-            background: #f5f5f5;
+            background: #f8f9fa;
+            border-color: #dadce0;
         }
 
         .chip.active {
-            background: #1976d2;
-            color: #fff;
-            border-color: #1976d2;
+            background: #e8f0fe;
+            color: #1967d2;
+            border-color: #d2e3fc;
+        }
+
+        .chip .material-icons-outlined {
+            font-size: 18px;
         }
 
         .stats-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
             gap: 16px;
-            margin-bottom: 24px;
+            margin-bottom: 32px;
         }
 
         .stat-card {
-            background: #fff;
-            border-radius: 16px;
+            background: #ffffff;
+            border-radius: 8px;
             padding: 24px;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.12);
+            border: 1px solid #e8eaed;
             text-align: center;
         }
 
         .stat-number {
-            font-size: 48px;
-            font-weight: 300;
-            color: #1976d2;
-            line-height: 1;
+            font-size: 40px;
+            font-weight: 400;
+            color: #1a73e8;
+            line-height: 1.2;
         }
 
         .stat-label {
-            color: #757575;
+            color: #5f6368;
             font-size: 14px;
             margin-top: 8px;
+            font-weight: 400;
         }
 
         .libraries-grid {
@@ -162,19 +181,17 @@
         }
 
         .library-card {
-            background: #fff;
-            border-radius: 16px;
+            background: #ffffff;
+            border-radius: 8px;
             padding: 20px;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.12);
-            transition: all 0.2s;
+            border: 1px solid #e8eaed;
+            transition: all 0.15s;
             cursor: pointer;
-            border: 1px solid transparent;
         }
 
         .library-card:hover {
-            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-            transform: translateY(-2px);
-            border-color: #1976d2;
+            box-shadow: 0 1px 3px rgba(60,64,67,0.3), 0 4px 8px rgba(60,64,67,0.15);
+            border-color: #dadce0;
         }
 
         .library-header {
@@ -185,9 +202,9 @@
         }
 
         .library-name {
-            font-size: 20px;
+            font-size: 18px;
             font-weight: 500;
-            color: #212121;
+            color: #202124;
             font-family: 'Roboto Mono', monospace;
         }
 
@@ -201,17 +218,17 @@
         }
 
         .badge-official {
-            background: #e3f2fd;
-            color: #1976d2;
+            background: #e8f0fe;
+            color: #1967d2;
         }
 
         .badge-community {
-            background: #f3e5f5;
-            color: #7b1fa2;
+            background: #fce8f3;
+            color: #c5221f;
         }
 
         .library-description {
-            color: #616161;
+            color: #5f6368;
             font-size: 14px;
             line-height: 1.5;
             margin-bottom: 16px;
@@ -221,7 +238,7 @@
             display: flex;
             gap: 16px;
             font-size: 13px;
-            color: #757575;
+            color: #5f6368;
             margin-bottom: 12px;
         }
 
@@ -229,6 +246,10 @@
             display: flex;
             align-items: center;
             gap: 4px;
+        }
+
+        .meta-item .material-icons-outlined {
+            font-size: 16px;
         }
 
         .keywords {
@@ -239,33 +260,33 @@
 
         .keyword-chip {
             padding: 4px 10px;
-            background: #f5f5f5;
+            background: #f1f3f4;
             border-radius: 12px;
             font-size: 12px;
-            color: #616161;
+            color: #5f6368;
         }
 
         .no-results {
             text-align: center;
             padding: 60px 20px;
-            color: #9e9e9e;
+            color: #5f6368;
         }
 
         .no-results-icon {
             font-size: 64px;
-            color: #e0e0e0;
+            color: #dadce0;
             margin-bottom: 16px;
         }
 
         footer {
             text-align: center;
             padding: 40px 20px;
-            color: #757575;
+            color: #5f6368;
             font-size: 14px;
         }
 
         .footer-link {
-            color: #1976d2;
+            color: #1a73e8;
             text-decoration: none;
             font-weight: 500;
         }
@@ -273,17 +294,13 @@
         .footer-link:hover {
             text-decoration: underline;
         }
-
-        .material-icons {
-            font-size: 20px;
-        }
     </style>
 </head>
 <body>
     <div id="root"></div>
 
     <script type="text/babel">
-        const { useState, useEffect } = React;
+        const { useState } = React;
 
         const libraries = [
             { name: 'core', type: 'official', description: 'Core types and functions', keywords: ['core', 'basic', 'fundamental'], author: 'Yorl Official' },
@@ -332,7 +349,7 @@
                 <>
                     <div className="app-bar">
                         <div className="app-bar-content">
-                            <span className="material-icons" style={{color: '#1976d2'}}>library_books</span>
+                            <span className="material-icons-outlined logo-icon">library_books</span>
                             <div>
                                 <div className="logo">Yorl-DBOL</div>
                                 <div className="subtitle">Database of Official Libraries</div>
@@ -343,7 +360,7 @@
                     <div className="container">
                         <div className="search-section">
                             <div className="search-box">
-                                <span className="material-icons search-icon">search</span>
+                                <span className="material-icons-outlined search-icon">search</span>
                                 <input
                                     type="text"
                                     className="search-input"
@@ -357,21 +374,21 @@
                                     className={`chip ${filter === 'all' ? 'active' : ''}`}
                                     onClick={() => setFilter('all')}
                                 >
-                                    <span className="material-icons" style={{fontSize: 16}}>apps</span>
+                                    <span className="material-icons-outlined">apps</span>
                                     All Libraries
                                 </div>
                                 <div 
                                     className={`chip ${filter === 'official' ? 'active' : ''}`}
                                     onClick={() => setFilter('official')}
                                 >
-                                    <span className="material-icons" style={{fontSize: 16}}>verified</span>
+                                    <span className="material-icons-outlined">verified</span>
                                     Official
                                 </div>
                                 <div 
                                     className={`chip ${filter === 'community' ? 'active' : ''}`}
                                     onClick={() => setFilter('community')}
                                 >
-                                    <span className="material-icons" style={{fontSize: 16}}>people</span>
+                                    <span className="material-icons-outlined">people</span>
                                     Community
                                 </div>
                             </div>
@@ -394,7 +411,7 @@
 
                         {filtered.length === 0 ? (
                             <div className="no-results">
-                                <div className="material-icons no-results-icon">search_off</div>
+                                <div className="material-icons-outlined no-results-icon">search_off</div>
                                 <div>No libraries found matching your search</div>
                             </div>
                         ) : (
@@ -414,11 +431,11 @@
                                         <div className="library-description">{lib.description}</div>
                                         <div className="library-meta">
                                             <div className="meta-item">
-                                                <span className="material-icons" style={{fontSize: 16}}>person</span>
+                                                <span className="material-icons-outlined">person</span>
                                                 {lib.author}
                                             </div>
                                             <div className="meta-item">
-                                                <span className="material-icons" style={{fontSize: 16}}>label</span>
+                                                <span className="material-icons-outlined">label</span>
                                                 v1.0.0
                                             </div>
                                         </div>
@@ -434,15 +451,19 @@
 
                         <footer>
                             <p>
+                                <a href="https://yorldbol.io" className="footer-link" target="_blank">
+                                    yorldbol.io
+                                </a>
+                                {' • '}
                                 <a href="https://github.com/Arthurc1Moude/yorl-dbol" className="footer-link" target="_blank">
-                                    View on GitHub
+                                    GitHub
                                 </a>
                                 {' • '}
                                 <a href="https://github.com/Arthurc1Moude/yorl" className="footer-link" target="_blank">
                                     Yorl Main Repository
                                 </a>
                             </p>
-                            <p style={{marginTop: 8}}>Built with React • Material Design</p>
+                            <p style={{marginTop: 8}}>Built with React and Material Design</p>
                         </footer>
                     </div>
                 </>
