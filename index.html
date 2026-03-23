@@ -39,6 +39,13 @@
             display: flex;
             align-items: center;
             gap: 12px;
+            justify-content: space-between;
+        }
+
+        .app-bar-left {
+            display: flex;
+            align-items: center;
+            gap: 12px;
         }
 
         .logo-icon {
@@ -113,6 +120,7 @@
             display: flex;
             gap: 12px;
             flex-wrap: wrap;
+            align-items: center;
         }
 
         .chip {
@@ -296,34 +304,52 @@
         }
 
         .add-button {
-            position: fixed;
-            bottom: 32px;
-            right: 32px;
             background: #1a73e8;
             color: #ffffff;
             border: none;
-            border-radius: 24px;
-            padding: 12px 24px;
+            border-radius: 20px;
+            padding: 10px 20px;
             font-size: 14px;
             font-weight: 500;
             font-family: 'Roboto', sans-serif;
             cursor: pointer;
-            box-shadow: 0 2px 8px rgba(26, 115, 232, 0.4);
             display: flex;
             align-items: center;
-            gap: 8px;
-            transition: all 0.2s;
+            gap: 6px;
+            transition: all 0.15s;
             text-decoration: none;
         }
 
         .add-button:hover {
             background: #1557b0;
-            box-shadow: 0 4px 12px rgba(26, 115, 232, 0.5);
-            transform: translateY(-2px);
+            box-shadow: 0 1px 3px rgba(60,64,67,0.3);
         }
 
-        .add-button .material-icons-outlined {
-            font-size: 20px;
+        .add-button-outlined {
+            background: transparent;
+            color: #1a73e8;
+            border: 1px solid #dadce0;
+            border-radius: 20px;
+            padding: 8px 16px;
+            font-size: 14px;
+            font-weight: 500;
+            font-family: 'Roboto', sans-serif;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            transition: all 0.15s;
+            text-decoration: none;
+        }
+
+        .add-button-outlined:hover {
+            background: #f8f9fa;
+            border-color: #1a73e8;
+        }
+
+        .add-button .material-icons-outlined,
+        .add-button-outlined .material-icons-outlined {
+            font-size: 18px;
         }
     </style>
 </head>
@@ -380,11 +406,21 @@
                 <>
                     <div className="app-bar">
                         <div className="app-bar-content">
-                            <span className="material-icons-outlined logo-icon">library_books</span>
-                            <div>
-                                <div className="logo">Yorl-DBOL</div>
-                                <div className="subtitle">Database of Official Libraries</div>
+                            <div className="app-bar-left">
+                                <span className="material-icons-outlined logo-icon">library_books</span>
+                                <div>
+                                    <div className="logo">Yorl-DBOL</div>
+                                    <div className="subtitle">Database of Official Libraries</div>
+                                </div>
                             </div>
+                            <a 
+                                href="https://github.com/yorldbol/yorldbol.github.io/blob/main/docs/CONTRIBUTING.md" 
+                                className="add-button-outlined"
+                                target="_blank"
+                            >
+                                <span className="material-icons-outlined">add</span>
+                                Add
+                            </a>
                         </div>
                     </div>
 
@@ -422,6 +458,15 @@
                                     <span className="material-icons-outlined">people</span>
                                     Community
                                 </div>
+                                <a 
+                                    href="https://github.com/yorldbol/yorldbol.github.io/blob/main/docs/CONTRIBUTING.md" 
+                                    className="add-button"
+                                    target="_blank"
+                                    style={{marginLeft: 'auto'}}
+                                >
+                                    <span className="material-icons-outlined">add</span>
+                                    Add
+                                </a>
                             </div>
                         </div>
 
@@ -497,15 +542,6 @@
                             <p style={{marginTop: 8}}>Built with React and Material Design</p>
                         </footer>
                     </div>
-
-                    <a 
-                        href="https://github.com/yorldbol/yorldbol.github.io/blob/main/docs/CONTRIBUTING.md" 
-                        className="add-button"
-                        target="_blank"
-                    >
-                        <span className="material-icons-outlined">add</span>
-                        Add Library
-                    </a>
                 </>
             );
         }
