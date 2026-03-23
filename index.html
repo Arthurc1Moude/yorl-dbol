@@ -1141,7 +1141,7 @@ This will be auto-validated and merged if all checks pass.`;
                                             </div>
                                         )}
                                     </div>
-                                    <button type="submit" className="submit-button" disabled={!formData.code}>
+                                    <button type="submit" className="submit-button" disabled={!formData.code || !formData.name || !formData.description || !formData.keywords || !formData.author}>
                                         Submit Library
                                     </button>
                                 </form>
