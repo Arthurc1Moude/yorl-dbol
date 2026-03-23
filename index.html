@@ -351,6 +351,126 @@
         .add-button-outlined .material-icons-outlined {
             font-size: 18px;
         }
+
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+        }
+
+        .modal {
+            background: #ffffff;
+            border-radius: 8px;
+            padding: 24px;
+            max-width: 500px;
+            width: 90%;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .modal-title {
+            font-size: 20px;
+            font-weight: 500;
+            color: #202124;
+        }
+
+        .close-button {
+            background: none;
+            border: none;
+            cursor: pointer;
+            color: #5f6368;
+            padding: 4px;
+        }
+
+        .form-group {
+            margin-bottom: 16px;
+        }
+
+        .form-label {
+            display: block;
+            font-size: 14px;
+            font-weight: 500;
+            color: #202124;
+            margin-bottom: 8px;
+        }
+
+        .form-input,
+        .form-textarea {
+            width: 100%;
+            padding: 12px;
+            font-size: 14px;
+            font-family: 'Roboto', sans-serif;
+            border: 1px solid #dadce0;
+            border-radius: 4px;
+            transition: all 0.15s;
+        }
+
+        .form-input:focus,
+        .form-textarea:focus {
+            outline: none;
+            border-color: #1a73e8;
+            box-shadow: 0 0 0 2px rgba(26, 115, 232, 0.1);
+        }
+
+        .form-textarea {
+            resize: vertical;
+            min-height: 80px;
+            font-family: 'Roboto Mono', monospace;
+        }
+
+        .form-select {
+            width: 100%;
+            padding: 12px;
+            font-size: 14px;
+            font-family: 'Roboto', sans-serif;
+            border: 1px solid #dadce0;
+            border-radius: 4px;
+            background: #ffffff;
+            cursor: pointer;
+        }
+
+        .submit-button {
+            width: 100%;
+            background: #1a73e8;
+            color: #ffffff;
+            border: none;
+            border-radius: 4px;
+            padding: 12px;
+            font-size: 14px;
+            font-weight: 500;
+            font-family: 'Roboto', sans-serif;
+            cursor: pointer;
+            transition: all 0.15s;
+        }
+
+        .submit-button:hover {
+            background: #1557b0;
+        }
+
+        .submit-button:disabled {
+            background: #dadce0;
+            cursor: not-allowed;
+        }
+
+        .form-hint {
+            font-size: 12px;
+            color: #5f6368;
+            margin-top: 4px;
+        }
     </style>
 </head>
 <body>
@@ -386,6 +506,15 @@
         function App() {
             const [search, setSearch] = useState('');
             const [filter, setFilter] = useState('all');
+            const [showModal, setShowModal] = useState(false);
+            const [formData, setFormData] = useState({
+                name: '',
+                description: '',
+                keywords: '',
+                author: '',
+                type: 'community',
+                code: ''
+            });
 
             const filtered = libraries.filter(lib => {
                 const matchesFilter = filter === 'all' || lib.type === filter;
@@ -402,6 +531,46 @@
                 community: libraries.filter(l => l.type === 'community').length
             };
 
+            const handleSubmit = (e) => {
+                e.preventDefault();
+                
+                const issueTitle = `New Library: ${formData.name}`;
+                const issueBody = `## New Library Submission
+
+**Name:** ${formData.name}
+**Description:** ${formData.description}
+**Keywords:** ${formData.keywords}
+**Author:** ${formData.author}
+**Type:** ${formData.type}
+
+**Code:**
+\`\`\`
+${formData.code}
+\`\`\`
+
+---
+Submitted via yorldbol.github.io`;
+
+                const url = `https://github.com/yorldbol/yorldbol.github.io/issues/new?title=${encodeURIComponent(issueTitle)}&body=${encodeURIComponent(issueBody)}`;
+                window.open(url, '_blank');
+                setShowModal(false);
+                setFormData({
+                    name: '',
+                    description: '',
+                    keywords: '',
+                    author: '',
+                    type: 'community',
+                    code: ''
+                });
+            };
+
+            const handleInputChange = (e) => {
+                setFormData({
+                    ...formData,
+                    [e.target.name]: e.target.value
+                });
+            };
+
             return (
                 <>
                     <div className="app-bar">
@@ -414,9 +583,12 @@
                                 </div>
                             </div>
                             <a 
-                                href="https://github.com/yorldbol/yorldbol.github.io/blob/main/docs/CONTRIBUTING.md" 
+                                href="#"
                                 className="add-button-outlined"
-                                target="_blank"
+                                onClick={(e) => {
+                                    e.preventDefault();
+                                    setShowModal(true);
+                                }}
                             >
                                 <span className="material-icons-outlined">add</span>
                                 Add
@@ -459,9 +631,12 @@
                                     Community
                                 </div>
                                 <a 
-                                    href="https://github.com/yorldbol/yorldbol.github.io/blob/main/docs/CONTRIBUTING.md" 
+                                    href="#"
                                     className="add-button"
-                                    target="_blank"
+                                    onClick={(e) => {
+                                        e.preventDefault();
+                                        setShowModal(true);
+                                    }}
                                     style={{marginLeft: 'auto'}}
                                 >
                                     <span className="material-icons-outlined">add</span>
@@ -542,6 +717,97 @@
                             <p style={{marginTop: 8}}>Built with React and Material Design</p>
                         </footer>
                     </div>
+
+                    {showModal && (
+                        <div className="modal-overlay" onClick={() => setShowModal(false)}>
+                            <div className="modal" onClick={(e) => e.stopPropagation()}>
+                                <div className="modal-header">
+                                    <div className="modal-title">Add New Library</div>
+                                    <button className="close-button" onClick={() => setShowModal(false)}>
+                                        <span className="material-icons-outlined">close</span>
+                                    </button>
+                                </div>
+                                <form onSubmit={handleSubmit}>
+                                    <div className="form-group">
+                                        <label className="form-label">Library Name *</label>
+                                        <input
+                                            type="text"
+                                            name="name"
+                                            className="form-input"
+                                            value={formData.name}
+                                            onChange={handleInputChange}
+                                            required
+                                            placeholder="e.g., mylib"
+                                        />
+                                    </div>
+                                    <div className="form-group">
+                                        <label className="form-label">Description *</label>
+                                        <input
+                                            type="text"
+                                            name="description"
+                                            className="form-input"
+                                            value={formData.description}
+                                            onChange={handleInputChange}
+                                            required
+                                            placeholder="Brief description of your library"
+                                        />
+                                    </div>
+                                    <div className="form-group">
+                                        <label className="form-label">Keywords *</label>
+                                        <input
+                                            type="text"
+                                            name="keywords"
+                                            className="form-input"
+                                            value={formData.keywords}
+                                            onChange={handleInputChange}
+                                            required
+                                            placeholder="keyword1, keyword2, keyword3"
+                                        />
+                                        <div className="form-hint">Comma-separated keywords</div>
+                                    </div>
+                                    <div className="form-group">
+                                        <label className="form-label">Author *</label>
+                                        <input
+                                            type="text"
+                                            name="author"
+                                            className="form-input"
+                                            value={formData.author}
+                                            onChange={handleInputChange}
+                                            required
+                                            placeholder="Your name or organization"
+                                        />
+                                    </div>
+                                    <div className="form-group">
+                                        <label className="form-label">Type *</label>
+                                        <select
+                                            name="type"
+                                            className="form-select"
+                                            value={formData.type}
+                                            onChange={handleInputChange}
+                                        >
+                                            <option value="community">Community</option>
+                                            <option value="official">Official (requires approval)</option>
+                                        </select>
+                                    </div>
+                                    <div className="form-group">
+                                        <label className="form-label">Library Code *</label>
+                                        <textarea
+                                            name="code"
+                                            className="form-textarea"
+                                            value={formData.code}
+                                            onChange={handleInputChange}
+                                            required
+                                            placeholder="Paste your .ybuiltin code here..."
+                                            rows="8"
+                                        />
+                                    </div>
+                                    <button type="submit" className="submit-button">
+                                        Submit Library
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                    )}
                 </>
             );
         }
