@@ -592,6 +592,119 @@
         .url-fetch-button:hover {
             background: #e8f0fe;
         }
+
+        .join-button {
+            background: transparent;
+            color: #1a73e8;
+            border: 1px solid #dadce0;
+            border-radius: 20px;
+            padding: 8px 16px;
+            font-size: 14px;
+            font-weight: 500;
+            font-family: 'Roboto', sans-serif;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            transition: all 0.15s;
+            text-decoration: none;
+            margin-right: 12px;
+        }
+
+        .join-button:hover {
+            background: #f8f9fa;
+            border-color: #1a73e8;
+        }
+
+        .join-button .material-icons-outlined {
+            font-size: 18px;
+        }
+
+        .join-modal-content {
+            padding: 8px 0;
+        }
+
+        .join-info-box {
+            background: #e8f0fe;
+            border-radius: 12px;
+            padding: 16px;
+            margin-bottom: 20px;
+        }
+
+        .join-info-title {
+            font-size: 15px;
+            font-weight: 500;
+            color: #1967d2;
+            margin-bottom: 12px;
+        }
+
+        .join-info-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .join-info-list li {
+            padding: 6px 0;
+            color: #5f6368;
+            font-size: 14px;
+            display: flex;
+            align-items: flex-start;
+            gap: 8px;
+        }
+
+        .join-info-list li:before {
+            content: '•';
+            color: #1a73e8;
+            font-weight: bold;
+            font-size: 18px;
+        }
+
+        .modal-actions {
+            display: flex;
+            gap: 12px;
+            justify-content: flex-end;
+            margin-top: 24px;
+        }
+
+        .button-secondary {
+            background: transparent;
+            color: #5f6368;
+            border: none;
+            border-radius: 20px;
+            padding: 10px 24px;
+            font-size: 14px;
+            font-weight: 500;
+            font-family: 'Roboto', sans-serif;
+            cursor: pointer;
+            transition: all 0.15s;
+        }
+
+        .button-secondary:hover {
+            background: #f8f9fa;
+        }
+
+        .button-primary {
+            background: #1a73e8;
+            color: #ffffff;
+            border: none;
+            border-radius: 20px;
+            padding: 10px 24px;
+            font-size: 14px;
+            font-weight: 500;
+            font-family: 'Roboto', sans-serif;
+            cursor: pointer;
+            transition: all 0.15s;
+        }
+
+        .button-primary:hover {
+            background: #1557b0;
+        }
+
+        .button-primary:disabled {
+            background: #dadce0;
+            cursor: not-allowed;
+        }
     </style>
 </head>
 <body>
@@ -604,6 +717,7 @@
             const [search, setSearch] = useState('');
             const [filter, setFilter] = useState('all');
             const [showModal, setShowModal] = useState(false);
+            const [showJoinModal, setShowJoinModal] = useState(false);
             const [libraries, setLibraries] = useState([]);
             const [loading, setLoading] = useState(true);
             const [formData, setFormData] = useState({
@@ -614,6 +728,13 @@
                 type: 'community',
                 code: '',
                 inputMethod: 'paste'
+            });
+            const [joinFormData, setJoinFormData] = useState({
+                fullName: '',
+                email: '',
+                github: '',
+                experience: '',
+                motivation: ''
             });
 
             // Fetch libraries from GitHub
@@ -837,6 +958,43 @@ This will be auto-validated and merged if all checks pass.`;
                 }
             };
 
+            const handleJoinSubmit = (e) => {
+                e.preventDefault();
+                
+                const issueTitle = `Volunteer Application: ${joinFormData.fullName}`;
+                const issueBody = `## Volunteer Team Application
+
+**Full Name:** ${joinFormData.fullName}
+**Email:** ${joinFormData.email}
+**GitHub Username:** ${joinFormData.github}
+**Experience:** ${joinFormData.experience}
+**Motivation:** ${joinFormData.motivation}
+
+---
+Submitted via yorldbol.github.io volunteer form`;
+
+                const url = `https://github.com/yorldbol/yorldbol.github.io/issues/new?title=${encodeURIComponent(issueTitle)}&body=${encodeURIComponent(issueBody)}&labels=volunteer-application`;
+                window.open(url, '_blank');
+                
+                alert('✅ Thank you for your interest! Please complete the application on GitHub.');
+                
+                setShowJoinModal(false);
+                setJoinFormData({
+                    fullName: '',
+                    email: '',
+                    github: '',
+                    experience: '',
+                    motivation: ''
+                });
+            };
+
+            const handleJoinInputChange = (e) => {
+                setJoinFormData({
+                    ...joinFormData,
+                    [e.target.name]: e.target.value
+                });
+            };
+
             return (
                 <>
                     <div className="app-bar">
@@ -848,17 +1006,26 @@ This will be auto-validated and merged if all checks pass.`;
                                     <div className="subtitle">Database of Official Libraries</div>
                                 </div>
                             </div>
-                            <a 
-                                href="#"
-                                className="add-button-outlined"
-                                onClick={(e) => {
-                                    e.preventDefault();
-                                    setShowModal(true);
-                                }}
-                            >
-                                <span className="material-icons-outlined">add</span>
-                                Add
-                            </a>
+                            <div style={{display: 'flex', alignItems: 'center'}}>
+                                <button 
+                                    className="join-button"
+                                    onClick={() => setShowJoinModal(true)}
+                                >
+                                    <span className="material-icons-outlined">groups</span>
+                                    Join Us
+                                </button>
+                                <a 
+                                    href="#"
+                                    className="add-button-outlined"
+                                    onClick={(e) => {
+                                        e.preventDefault();
+                                        setShowModal(true);
+                                    }}
+                                >
+                                    <span className="material-icons-outlined">add</span>
+                                    Add
+                                </a>
+                            </div>
                         </div>
                     </div>
 
@@ -1145,6 +1312,114 @@ This will be auto-validated and merged if all checks pass.`;
                                         Submit Library
                                     </button>
                                 </form>
+                            </div>
+                        </div>
+                    )}
+
+                    {showJoinModal && (
+                        <div className="modal-overlay" onClick={() => setShowJoinModal(false)}>
+                            <div className="modal" onClick={(e) => e.stopPropagation()}>
+                                <div className="modal-header">
+                                    <div style={{display: 'flex', alignItems: 'center', gap: 12}}>
+                                        <span className="material-icons-outlined" style={{color: '#1a73e8', fontSize: 28}}>groups</span>
+                                        <div className="modal-title">Join Volunteers</div>
+                                    </div>
+                                    <button className="close-button" onClick={() => setShowJoinModal(false)}>
+                                        <span className="material-icons-outlined">close</span>
+                                    </button>
+                                </div>
+                                
+                                <div className="join-modal-content">
+                                    <div className="join-info-box">
+                                        <div className="join-info-title">After you join our team, you will automatically be able to:</div>
+                                        <ul className="join-info-list">
+                                            <li>Merge pull requests</li>
+                                            <li>Manage all community libraries (read, share, delete, disable, shutdown, enable, open)</li>
+                                            <li>Get important information from our community teams</li>
+                                            <li>Help us improve our systems</li>
+                                        </ul>
+                                    </div>
+
+                                    <form onSubmit={handleJoinSubmit}>
+                                        <div className="form-group">
+                                            <label className="form-label">Full Name *</label>
+                                            <input
+                                                type="text"
+                                                name="fullName"
+                                                className="form-input"
+                                                value={joinFormData.fullName}
+                                                onChange={handleJoinInputChange}
+                                                required
+                                                placeholder="Your full name"
+                                            />
+                                        </div>
+                                        <div className="form-group">
+                                            <label className="form-label">Email *</label>
+                                            <input
+                                                type="email"
+                                                name="email"
+                                                className="form-input"
+                                                value={joinFormData.email}
+                                                onChange={handleJoinInputChange}
+                                                required
+                                                placeholder="your.email@example.com"
+                                            />
+                                        </div>
+                                        <div className="form-group">
+                                            <label className="form-label">GitHub Username *</label>
+                                            <input
+                                                type="text"
+                                                name="github"
+                                                className="form-input"
+                                                value={joinFormData.github}
+                                                onChange={handleJoinInputChange}
+                                                required
+                                                placeholder="@username"
+                                            />
+                                        </div>
+                                        <div className="form-group">
+                                            <label className="form-label">Experience *</label>
+                                            <textarea
+                                                name="experience"
+                                                className="form-textarea"
+                                                value={joinFormData.experience}
+                                                onChange={handleJoinInputChange}
+                                                required
+                                                placeholder="Tell us about your experience with programming, open source, etc."
+                                                rows="3"
+                                            />
+                                        </div>
+                                        <div className="form-group">
+                                            <label className="form-label">Why do you want to join? *</label>
+                                            <textarea
+                                                name="motivation"
+                                                className="form-textarea"
+                                                value={joinFormData.motivation}
+                                                onChange={handleJoinInputChange}
+                                                required
+                                                placeholder="What motivates you to volunteer with us?"
+                                                rows="3"
+                                            />
+                                        </div>
+                                        
+                                        <div className="modal-actions">
+                                            <button 
+                                                type="button" 
+                                                className="button-secondary"
+                                                onClick={() => setShowJoinModal(false)}
+                                            >
+                                                No, Thanks
+                                            </button>
+                                            <button 
+                                                type="submit" 
+                                                className="button-primary"
+                                                disabled={!joinFormData.fullName || !joinFormData.email || !joinFormData.github || !joinFormData.experience || !joinFormData.motivation}
+                                            >
+                                                Confirm
+                                            </button>
+                                        </div>
+                                    </form>
+                                </div>
                             </div>
                         </div>
                     )}
