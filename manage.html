@@ -1,0 +1,874 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Yorl-DBOL Management - Volunteer Portal</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&family=Roboto+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined" rel="stylesheet">
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            background: #f8f9fa;
+            color: #202124;
+            min-height: 100vh;
+        }
+
+        .login-container {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .login-card {
+            background: #ffffff;
+            border-radius: 24px;
+            padding: 48px 40px;
+            max-width: 440px;
+            width: 100%;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            border: 1px solid #e8eaed;
+        }
+
+        .login-header {
+            text-align: center;
+            margin-bottom: 32px;
+        }
+
+        .login-icon {
+            color: #1a73e8;
+            font-size: 48px;
+            margin-bottom: 16px;
+        }
+
+        .login-title {
+            font-size: 24px;
+            font-weight: 400;
+            color: #202124;
+            margin-bottom: 8px;
+        }
+
+        .login-subtitle {
+            font-size: 14px;
+            color: #5f6368;
+        }
+
+        .form-group {
+            margin-bottom: 24px;
+        }
+
+        .form-label {
+            display: block;
+            font-size: 14px;
+            font-weight: 500;
+            color: #202124;
+            margin-bottom: 8px;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 14px 16px;
+            font-size: 14px;
+            font-family: 'Roboto', sans-serif;
+            border: 1px solid #dadce0;
+            border-radius: 8px;
+            transition: all 0.15s;
+            background: #ffffff;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: #1a73e8;
+            box-shadow: 0 0 0 3px rgba(26, 115, 232, 0.1);
+        }
+
+        .login-button {
+            width: 100%;
+            background: #1a73e8;
+            color: #ffffff;
+            border: none;
+            border-radius: 8px;
+            padding: 14px 24px;
+            font-size: 15px;
+            font-weight: 500;
+            font-family: 'Roboto', sans-serif;
+            cursor: pointer;
+            transition: all 0.15s;
+            margin-top: 8px;
+        }
+
+        .login-button:hover {
+            background: #1557b0;
+        }
+
+        .login-button:disabled {
+            background: #dadce0;
+            cursor: not-allowed;
+        }
+
+        .error-message {
+            background: #fce8e6;
+            color: #c5221f;
+            padding: 12px 16px;
+            border-radius: 8px;
+            font-size: 14px;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .app-bar {
+            background: #ffffff;
+            border-bottom: 1px solid #e8eaed;
+            padding: 20px 24px;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .app-bar-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .app-bar-left {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .logo-icon {
+            color: #1a73e8;
+            font-size: 32px;
+        }
+
+        .logo {
+            font-size: 22px;
+            font-weight: 400;
+            color: #202124;
+        }
+
+        .subtitle {
+            color: #5f6368;
+            font-size: 13px;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .user-badge {
+            background: #e8f0fe;
+            color: #1967d2;
+            padding: 8px 16px;
+            border-radius: 16px;
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .logout-button {
+            background: transparent;
+            color: #5f6368;
+            border: 1px solid #dadce0;
+            border-radius: 20px;
+            padding: 8px 16px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.15s;
+        }
+
+        .logout-button:hover {
+            background: #f8f9fa;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 32px 24px;
+            background: #f8f9fa;
+            min-height: calc(100vh - 73px);
+        }
+
+        .libraries-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
+            gap: 16px;
+        }
+
+        .library-card {
+            background: #ffffff;
+            border-radius: 16px;
+            padding: 24px;
+            border: 1px solid #e8eaed;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .library-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 4px;
+            height: 100%;
+            background: #1a73e8;
+            transform: scaleY(0);
+            transition: transform 0.3s ease;
+        }
+
+        .library-card:hover {
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+            transform: translateY(-4px);
+        }
+
+        .library-card:hover::before {
+            transform: scaleY(1);
+        }
+
+        .library-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 12px;
+        }
+
+        .library-name {
+            font-size: 18px;
+            font-weight: 500;
+            color: #202124;
+            font-family: 'Roboto Mono', monospace;
+        }
+
+        .badge {
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 11px;
+            font-weight: 500;
+            text-transform: uppercase;
+        }
+
+        .badge-official {
+            background: #e8f0fe;
+            color: #1967d2;
+        }
+
+        .badge-community {
+            background: #fce8f3;
+            color: #c5221f;
+        }
+
+        .library-description {
+            color: #5f6368;
+            font-size: 14px;
+            line-height: 1.5;
+            margin-bottom: 16px;
+        }
+
+        .library-actions {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin-top: 16px;
+            padding-top: 16px;
+            border-top: 1px solid #e8eaed;
+        }
+
+        .action-button {
+            padding: 8px 16px;
+            border-radius: 8px;
+            border: 1px solid #dadce0;
+            background: #ffffff;
+            cursor: pointer;
+            font-size: 13px;
+            font-weight: 500;
+            transition: all 0.15s;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .action-button:hover {
+            background: #f8f9fa;
+        }
+
+        .action-button.primary {
+            background: #1a73e8;
+            color: #ffffff;
+            border-color: #1a73e8;
+        }
+
+        .action-button.primary:hover {
+            background: #1557b0;
+        }
+
+        .action-button.danger {
+            color: #c5221f;
+            border-color: #fce8e6;
+        }
+
+        .action-button.danger:hover {
+            background: #fce8e6;
+        }
+
+        .action-button .material-icons-outlined {
+            font-size: 18px;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 16px;
+            margin-bottom: 32px;
+        }
+
+        .stat-card {
+            background: #ffffff;
+            border-radius: 12px;
+            padding: 24px;
+            border: 1px solid #e8eaed;
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 40px;
+            font-weight: 400;
+            color: #1a73e8;
+        }
+
+        .stat-label {
+            color: #5f6368;
+            font-size: 14px;
+            margin-top: 8px;
+        }
+
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 24px;
+        }
+
+        .section-title {
+            font-size: 20px;
+            font-weight: 500;
+            color: #202124;
+        }
+
+        .filter-chips {
+            display: flex;
+            gap: 8px;
+        }
+
+        .chip {
+            padding: 8px 16px;
+            border-radius: 16px;
+            border: 1px solid #dadce0;
+            background: #ffffff;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 500;
+            transition: all 0.15s;
+            color: #5f6368;
+        }
+
+        .chip:hover {
+            background: #f8f9fa;
+        }
+
+        .chip.active {
+            background: #e8f0fe;
+            color: #1967d2;
+            border-color: #d2e3fc;
+        }
+
+        .loading-spinner {
+            text-align: center;
+            padding: 60px 20px;
+            color: #5f6368;
+        }
+
+        .no-results {
+            text-align: center;
+            padding: 60px 20px;
+            color: #5f6368;
+        }
+    </style>
+</head>
+<body>
+    <div id="root"></div>
+
+    <script type="text/babel">
+        const { useState, useEffect } = React;
+
+        // GitHub Configuration
+        const GITHUB_REPO_OWNER = 'yorldbol';
+        const GITHUB_REPO_NAME = 'yorldbol.github.io';
+        
+        // Volunteer tokens with GitHub PAT (Personal Access Tokens)
+        // In production, store these securely server-side
+        const VALID_CREDENTIALS = {
+            'volunteer1': { password: 'pass123', githubToken: '' },
+            'volunteer2': { password: 'pass456', githubToken: '' },
+            'admin': { password: 'admin123', githubToken: '' }
+        };
+
+        function App() {
+            const [isAuthenticated, setIsAuthenticated] = useState(false);
+            const [token, setToken] = useState('');
+            const [password, setPassword] = useState('');
+            const [error, setError] = useState('');
+            const [libraries, setLibraries] = useState([]);
+            const [loading, setLoading] = useState(false);
+            const [filter, setFilter] = useState('all');
+            const [currentUser, setCurrentUser] = useState('');
+
+            useEffect(() => {
+                // Check if already logged in
+                const savedToken = localStorage.getItem('volunteer_token');
+                const savedUser = localStorage.getItem('volunteer_user');
+                if (savedToken && savedUser) {
+                    setToken(savedToken);
+                    setCurrentUser(savedUser);
+                    setIsAuthenticated(true);
+                }
+            }, []);
+
+            useEffect(() => {
+                if (isAuthenticated) {
+                    fetchLibraries();
+                }
+            }, [isAuthenticated]);
+
+            const fetchLibraries = async () => {
+                try {
+                    setLoading(true);
+                    const response = await fetch('https://api.github.com/repos/yorldbol/yorldbol.github.io/contents/usrsr');
+                    const usrsrFiles = await response.json();
+                    
+                    const response2 = await fetch('https://api.github.com/repos/yorldbol/yorldbol.github.io/contents/opensrc');
+                    const opensrcFiles = await response2.json();
+                    
+                    const allFiles = [...opensrcFiles, ...usrsrFiles];
+                    const ybuiltinFiles = allFiles.filter(f => f.name && f.name.endsWith('.ybuiltin'));
+                    
+                    const libraryData = ybuiltinFiles.map(file => ({
+                        name: file.name.replace('.ybuiltin', ''),
+                        type: file.path.startsWith('opensrc') ? 'official' : 'community',
+                        path: file.path,
+                        url: file.html_url,
+                        downloadUrl: file.download_url
+                    }));
+                    
+                    setLibraries(libraryData);
+                    setLoading(false);
+                } catch (error) {
+                    console.error('Error fetching libraries:', error);
+                    setLoading(false);
+                }
+            };
+
+            const handleLogin = (e) => {
+                e.preventDefault();
+                setError('');
+
+                const credential = VALID_CREDENTIALS[token];
+                if (credential && credential.password === password) {
+                    localStorage.setItem('volunteer_token', token);
+                    localStorage.setItem('volunteer_user', token);
+                    if (credential.githubToken) {
+                        localStorage.setItem('github_token', credential.githubToken);
+                    }
+                    setCurrentUser(token);
+                    setIsAuthenticated(true);
+                } else {
+                    setError('Invalid token or password');
+                }
+            };
+
+            const handleLogout = () => {
+                localStorage.removeItem('volunteer_token');
+                localStorage.removeItem('volunteer_user');
+                localStorage.removeItem('github_token');
+                setIsAuthenticated(false);
+                setToken('');
+                setPassword('');
+                setCurrentUser('');
+            };
+
+            const handleAction = async (action, library) => {
+                const confirmMessage = `Are you sure you want to ${action} "${library.name}"?`;
+                
+                if (action === 'delete' || action === 'disable' || action === 'shutdown') {
+                    if (!confirm(confirmMessage)) return;
+                }
+
+                const githubToken = localStorage.getItem('github_token');
+
+                try {
+                    switch(action) {
+                        case 'open':
+                            window.open(library.url, '_blank');
+                            break;
+                        
+                        case 'share':
+                            const shareUrl = `https://yorldbol.github.io/${library.path}`;
+                            await navigator.clipboard.writeText(shareUrl);
+                            alert('✅ Library URL copied to clipboard!');
+                            break;
+                        
+                        case 'delete':
+                            if (!githubToken) {
+                                alert('⚠️ GitHub token required for this action. Please contact admin to configure your token.');
+                                return;
+                            }
+                            
+                            // Real GitHub API call to delete file
+                            const deleteResponse = await fetch(
+                                `https://api.github.com/repos/${GITHUB_REPO_OWNER}/${GITHUB_REPO_NAME}/contents/${library.path}`,
+                                {
+                                    method: 'DELETE',
+                                    headers: {
+                                        'Authorization': `token ${githubToken}`,
+                                        'Content-Type': 'application/json',
+                                    },
+                                    body: JSON.stringify({
+                                        message: `Delete library: ${library.name}`,
+                                        sha: await getFileSha(library.path, githubToken)
+                                    })
+                                }
+                            );
+                            
+                            if (deleteResponse.ok) {
+                                alert(`✅ Library "${library.name}" deleted successfully!`);
+                                fetchLibraries();
+                            } else {
+                                const error = await deleteResponse.json();
+                                alert(`❌ Failed to delete: ${error.message}`);
+                            }
+                            break;
+                        
+                        case 'disable':
+                            // Create a .disabled marker file
+                            if (!githubToken) {
+                                alert('⚠️ GitHub token required for this action.');
+                                return;
+                            }
+                            
+                            const disableResponse = await fetch(
+                                `https://api.github.com/repos/${GITHUB_REPO_OWNER}/${GITHUB_REPO_NAME}/contents/${library.path}.disabled`,
+                                {
+                                    method: 'PUT',
+                                    headers: {
+                                        'Authorization': `token ${githubToken}`,
+                                        'Content-Type': 'application/json',
+                                    },
+                                    body: JSON.stringify({
+                                        message: `Disable library: ${library.name}`,
+                                        content: btoa(`Disabled by ${currentUser} at ${new Date().toISOString()}`)
+                                    })
+                                }
+                            );
+                            
+                            if (disableResponse.ok) {
+                                alert(`⏸️ Library "${library.name}" disabled successfully!`);
+                            } else {
+                                alert(`❌ Failed to disable library`);
+                            }
+                            break;
+                        
+                        case 'enable':
+                            // Remove .disabled marker file
+                            if (!githubToken) {
+                                alert('⚠️ GitHub token required for this action.');
+                                return;
+                            }
+                            
+                            const sha = await getFileSha(`${library.path}.disabled`, githubToken);
+                            if (!sha) {
+                                alert('ℹ️ Library is not disabled');
+                                return;
+                            }
+                            
+                            const enableResponse = await fetch(
+                                `https://api.github.com/repos/${GITHUB_REPO_OWNER}/${GITHUB_REPO_NAME}/contents/${library.path}.disabled`,
+                                {
+                                    method: 'DELETE',
+                                    headers: {
+                                        'Authorization': `token ${githubToken}`,
+                                        'Content-Type': 'application/json',
+                                    },
+                                    body: JSON.stringify({
+                                        message: `Enable library: ${library.name}`,
+                                        sha: sha
+                                    })
+                                }
+                            );
+                            
+                            if (enableResponse.ok) {
+                                alert(`✅ Library "${library.name}" enabled successfully!`);
+                            } else {
+                                alert(`❌ Failed to enable library`);
+                            }
+                            break;
+                        
+                        case 'shutdown':
+                            alert(`🛑 Shutdown request for "${library.name}" submitted. This requires manual intervention.`);
+                            break;
+                        
+                        default:
+                            break;
+                    }
+                } catch (error) {
+                    console.error('Action error:', error);
+                    alert(`❌ Error: ${error.message}`);
+                }
+            };
+
+            // Helper function to get file SHA (required for GitHub API updates/deletes)
+            const getFileSha = async (path, token) => {
+                try {
+                    const response = await fetch(
+                        `https://api.github.com/repos/${GITHUB_REPO_OWNER}/${GITHUB_REPO_NAME}/contents/${path}`,
+                        {
+                            headers: token ? {
+                                'Authorization': `token ${token}`
+                            } : {}
+                        }
+                    );
+                    
+                    if (response.ok) {
+                        const data = await response.json();
+                        return data.sha;
+                    }
+                    return null;
+                } catch (error) {
+                    console.error('Error getting file SHA:', error);
+                    return null;
+                }
+            };
+
+            const filtered = libraries.filter(lib => {
+                if (filter === 'all') return true;
+                return lib.type === filter;
+            });
+
+            const stats = {
+                total: libraries.length,
+                official: libraries.filter(l => l.type === 'official').length,
+                community: libraries.filter(l => l.type === 'community').length
+            };
+
+            if (!isAuthenticated) {
+                return (
+                    <div className="login-container">
+                        <div className="login-card">
+                            <div className="login-header">
+                                <span className="material-icons-outlined login-icon">admin_panel_settings</span>
+                                <div className="login-title">Yorl-DBOL Management</div>
+                                <div className="login-subtitle">Volunteer Portal</div>
+                            </div>
+                            
+                            {error && (
+                                <div className="error-message">
+                                    <span className="material-icons-outlined">error</span>
+                                    {error}
+                                </div>
+                            )}
+
+                            <form onSubmit={handleLogin}>
+                                <div className="form-group">
+                                    <label className="form-label">Volunteer Token</label>
+                                    <input
+                                        type="text"
+                                        className="form-input"
+                                        value={token}
+                                        onChange={(e) => setToken(e.target.value)}
+                                        placeholder="Enter your volunteer token"
+                                        required
+                                    />
+                                </div>
+                                <div className="form-group">
+                                    <label className="form-label">Password</label>
+                                    <input
+                                        type="password"
+                                        className="form-input"
+                                        value={password}
+                                        onChange={(e) => setPassword(e.target.value)}
+                                        placeholder="Enter your password"
+                                        required
+                                    />
+                                </div>
+                                <button type="submit" className="login-button">
+                                    Sign In
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                );
+            }
+
+            return (
+                <>
+                    <div className="app-bar">
+                        <div className="app-bar-content">
+                            <div className="app-bar-left">
+                                <span className="material-icons-outlined logo-icon">admin_panel_settings</span>
+                                <div>
+                                    <div className="logo">Yorl-DBOL Management</div>
+                                    <div className="subtitle">Volunteer Portal</div>
+                                </div>
+                            </div>
+                            <div className="user-info">
+                                <span className="user-badge">
+                                    <span className="material-icons-outlined" style={{fontSize: 16, verticalAlign: 'middle'}}>person</span>
+                                    {' '}{currentUser}
+                                </span>
+                                <button className="logout-button" onClick={handleLogout}>
+                                    <span className="material-icons-outlined" style={{fontSize: 16, verticalAlign: 'middle'}}>logout</span>
+                                    {' '}Logout
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div className="container">
+                        <div className="stats-grid">
+                            <div className="stat-card">
+                                <div className="stat-number">{stats.total}</div>
+                                <div className="stat-label">Total Libraries</div>
+                            </div>
+                            <div className="stat-card">
+                                <div className="stat-number">{stats.official}</div>
+                                <div className="stat-label">Official</div>
+                            </div>
+                            <div className="stat-card">
+                                <div className="stat-number">{stats.community}</div>
+                                <div className="stat-label">Community</div>
+                            </div>
+                        </div>
+
+                        <div className="section-header">
+                            <div className="section-title">Manage Libraries</div>
+                            <div className="filter-chips">
+                                <div 
+                                    className={`chip ${filter === 'all' ? 'active' : ''}`}
+                                    onClick={() => setFilter('all')}
+                                >
+                                    All
+                                </div>
+                                <div 
+                                    className={`chip ${filter === 'official' ? 'active' : ''}`}
+                                    onClick={() => setFilter('official')}
+                                >
+                                    Official
+                                </div>
+                                <div 
+                                    className={`chip ${filter === 'community' ? 'active' : ''}`}
+                                    onClick={() => setFilter('community')}
+                                >
+                                    Community
+                                </div>
+                            </div>
+                        </div>
+
+                        {loading ? (
+                            <div className="loading-spinner">
+                                <span className="material-icons-outlined" style={{fontSize: 48}}>hourglass_empty</span>
+                                <div style={{marginTop: 16}}>Loading libraries...</div>
+                            </div>
+                        ) : filtered.length === 0 ? (
+                            <div className="no-results">
+                                <span className="material-icons-outlined" style={{fontSize: 48}}>inbox</span>
+                                <div style={{marginTop: 16}}>No libraries found</div>
+                            </div>
+                        ) : (
+                            <div className="libraries-grid">
+                                {filtered.map(lib => (
+                                    <div key={lib.name} className="library-card">
+                                        <div className="library-header">
+                                            <div className="library-name">{lib.name}</div>
+                                            <div className={`badge badge-${lib.type}`}>
+                                                {lib.type}
+                                            </div>
+                                        </div>
+                                        <div className="library-description">
+                                            Path: {lib.path}
+                                        </div>
+                                        <div className="library-actions">
+                                            <button 
+                                                className="action-button primary"
+                                                onClick={() => handleAction('open', lib)}
+                                            >
+                                                <span className="material-icons-outlined">open_in_new</span>
+                                                Open
+                                            </button>
+                                            <button 
+                                                className="action-button"
+                                                onClick={() => handleAction('share', lib)}
+                                            >
+                                                <span className="material-icons-outlined">share</span>
+                                                Share
+                                            </button>
+                                            <button 
+                                                className="action-button"
+                                                onClick={() => handleAction('enable', lib)}
+                                            >
+                                                <span className="material-icons-outlined">check_circle</span>
+                                                Enable
+                                            </button>
+                                            <button 
+                                                className="action-button"
+                                                onClick={() => handleAction('disable', lib)}
+                                            >
+                                                <span className="material-icons-outlined">pause_circle</span>
+                                                Disable
+                                            </button>
+                                            <button 
+                                                className="action-button danger"
+                                                onClick={() => handleAction('shutdown', lib)}
+                                            >
+                                                <span className="material-icons-outlined">block</span>
+                                                Shutdown
+                                            </button>
+                                            <button 
+                                                className="action-button danger"
+                                                onClick={() => handleAction('delete', lib)}
+                                            >
+                                                <span className="material-icons-outlined">delete</span>
+                                                Delete
+                                            </button>
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+                        )}
+                    </div>
+                </>
+            );
+        }
+
+        ReactDOM.render(<App />, document.getElementById('root'));
+    </script>
+</body>
+</html>
