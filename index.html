@@ -12,563 +12,201 @@
     <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: 'Roboto', sans-serif;
-            background: #ffffff;
-            color: #202124;
-        }
-
-        .app-bar {
-            background: #ffffff;
-            border-bottom: 1px solid #e8eaed;
-            padding: 20px 24px;
-            position: sticky;
-            top: 0;
-            z-index: 100;
-        }
-
-        .app-bar-content {
-            max-width: 1200px;
-            margin: 0 auto;
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            justify-content: space-between;
-        }
-
-        .app-bar-left {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-
-        .logo-icon {
-            color: #1a73e8;
-            font-size: 32px;
-        }
-
-        .logo {
-            font-size: 22px;
-            font-weight: 400;
-            color: #202124;
-            letter-spacing: -0.5px;
-        }
-
-        .subtitle {
-            color: #5f6368;
-            font-size: 13px;
-            font-weight: 400;
-        }
-
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 32px 24px;
-        }
-
-        .search-section {
-            background: #ffffff;
-            border-radius: 8px;
-            padding: 24px;
-            margin-bottom: 32px;
-            border: 1px solid #e8eaed;
-        }
-
-        .search-box {
-            position: relative;
-            margin-bottom: 20px;
-        }
-
-        .search-input {
-            width: 100%;
-            padding: 14px 14px 14px 48px;
-            font-size: 16px;
-            font-family: 'Roboto', sans-serif;
-            border: 1px solid #dadce0;
-            border-radius: 24px;
-            background: #ffffff;
-            transition: all 0.15s;
-            color: #202124;
-        }
-
-        .search-input:focus {
-            outline: none;
-            border-color: #1a73e8;
-            box-shadow: 0 1px 6px rgba(32,33,36,0.28);
-        }
-
-        .search-input::placeholder {
-            color: #5f6368;
-        }
-
-        .search-icon {
-            position: absolute;
-            left: 16px;
-            top: 50%;
-            transform: translateY(-50%);
-            color: #5f6368;
-            font-size: 20px;
-        }
-
-        .filters {
-            display: flex;
-            gap: 12px;
-            flex-wrap: wrap;
-            align-items: center;
-        }
-
-        .chip {
-            padding: 8px 16px;
-            border-radius: 16px;
-            border: 1px solid #dadce0;
-            background: #ffffff;
-            cursor: pointer;
-            font-size: 14px;
-            font-weight: 500;
-            transition: all 0.15s;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            color: #5f6368;
-        }
-
-        .chip:hover {
-            background: #f8f9fa;
-            border-color: #dadce0;
-        }
-
-        .chip.active {
-            background: #e8f0fe;
-            color: #1967d2;
-            border-color: #d2e3fc;
-        }
-
-        .chip .material-icons-outlined {
-            font-size: 18px;
-        }
-
-        .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 16px;
-            margin-bottom: 32px;
-        }
-
-        .stat-card {
-            background: #ffffff;
-            border-radius: 8px;
-            padding: 24px;
-            border: 1px solid #e8eaed;
-            text-align: center;
-        }
-
-        .stat-number {
-            font-size: 40px;
-            font-weight: 400;
-            color: #1a73e8;
-            line-height: 1.2;
-        }
-
-        .stat-label {
-            color: #5f6368;
-            font-size: 14px;
-            margin-top: 8px;
-            font-weight: 400;
-        }
-
-        .libraries-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-            gap: 16px;
-        }
-
-        .library-card {
-            background: #ffffff;
-            border-radius: 8px;
-            padding: 20px;
-            border: 1px solid #e8eaed;
-            transition: all 0.15s;
-            cursor: pointer;
-        }
-
-        .library-card:hover {
-            box-shadow: 0 1px 3px rgba(60,64,67,0.3), 0 4px 8px rgba(60,64,67,0.15);
-            border-color: #dadce0;
-        }
-
-        .library-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-start;
-            margin-bottom: 12px;
-        }
-
-        .library-name {
-            font-size: 18px;
-            font-weight: 500;
-            color: #202124;
-            font-family: 'Roboto Mono', monospace;
-        }
-
-        .badge {
-            padding: 4px 12px;
-            border-radius: 12px;
-            font-size: 11px;
-            font-weight: 500;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-
-        .badge-official {
-            background: #e8f0fe;
-            color: #1967d2;
-        }
-
-        .badge-community {
-            background: #fce8f3;
-            color: #c5221f;
-        }
-
-        .library-description {
-            color: #5f6368;
-            font-size: 14px;
-            line-height: 1.5;
-            margin-bottom: 16px;
-        }
-
-        .library-meta {
-            display: flex;
-            gap: 16px;
-            font-size: 13px;
-            color: #5f6368;
-            margin-bottom: 12px;
-        }
-
-        .meta-item {
-            display: flex;
-            align-items: center;
-            gap: 4px;
-        }
-
-        .meta-item .material-icons-outlined {
-            font-size: 16px;
-        }
-
-        .keywords {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 6px;
-        }
-
-        .keyword-chip {
-            padding: 4px 10px;
-            background: #f1f3f4;
-            border-radius: 12px;
-            font-size: 12px;
-            color: #5f6368;
-        }
-
-        .no-results {
-            text-align: center;
-            padding: 60px 20px;
-            color: #5f6368;
-        }
-
-        .no-results-icon {
-            font-size: 64px;
-            color: #dadce0;
-            margin-bottom: 16px;
-        }
-
-        footer {
-            text-align: center;
-            padding: 40px 20px;
-            color: #5f6368;
-            font-size: 14px;
-        }
-
-        .footer-link {
-            color: #1a73e8;
-            text-decoration: none;
-            font-weight: 500;
-        }
-
-        .footer-link:hover {
-            text-decoration: underline;
-        }
-
-        .add-button {
-            background: #1a73e8;
-            color: #ffffff;
-            border: none;
-            border-radius: 20px;
-            padding: 10px 20px;
-            font-size: 14px;
-            font-weight: 500;
-            font-family: 'Roboto', sans-serif;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            transition: all 0.15s;
-            text-decoration: none;
-        }
-
-        .add-button:hover {
-            background: #1557b0;
-            box-shadow: 0 1px 3px rgba(60,64,67,0.3);
-        }
-
-        .add-button-outlined {
-            background: transparent;
-            color: #1a73e8;
-            border: 1px solid #dadce0;
-            border-radius: 20px;
-            padding: 8px 16px;
-            font-size: 14px;
-            font-weight: 500;
-            font-family: 'Roboto', sans-serif;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            transition: all 0.15s;
-            text-decoration: none;
-        }
-
-        .add-button-outlined:hover {
-            background: #f8f9fa;
-            border-color: #1a73e8;
-        }
-
-        .add-button .material-icons-outlined,
-        .add-button-outlined .material-icons-outlined {
-            font-size: 18px;
-        }
-
-        .modal-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: rgba(0, 0, 0, 0.5);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            z-index: 1000;
-        }
-
-        .modal {
-            background: #ffffff;
-            border-radius: 8px;
-            padding: 24px;
-            max-width: 500px;
-            width: 90%;
-            max-height: 90vh;
-            overflow-y: auto;
-        }
-
-        .modal-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 20px;
-        }
-
-        .modal-title {
-            font-size: 20px;
-            font-weight: 500;
-            color: #202124;
-        }
-
-        .close-button {
-            background: none;
-            border: none;
-            cursor: pointer;
-            color: #5f6368;
-            padding: 4px;
-        }
-
-        .form-group {
-            margin-bottom: 16px;
-        }
-
-        .form-label {
-            display: block;
-            font-size: 14px;
-            font-weight: 500;
-            color: #202124;
-            margin-bottom: 8px;
-        }
-
-        .form-input,
-        .form-textarea {
-            width: 100%;
-            padding: 12px;
-            font-size: 14px;
-            font-family: 'Roboto', sans-serif;
-            border: 1px solid #dadce0;
-            border-radius: 4px;
-            transition: all 0.15s;
-        }
-
-        .form-input:focus,
-        .form-textarea:focus {
-            outline: none;
-            border-color: #1a73e8;
-            box-shadow: 0 0 0 2px rgba(26, 115, 232, 0.1);
-        }
-
-        .form-textarea {
-            resize: vertical;
-            min-height: 80px;
-            font-family: 'Roboto Mono', monospace;
-        }
-
-        .form-select {
-            width: 100%;
-            padding: 12px;
-            font-size: 14px;
-            font-family: 'Roboto', sans-serif;
-            border: 1px solid #dadce0;
-            border-radius: 4px;
-            background: #ffffff;
-            cursor: pointer;
-        }
-
-        .submit-button {
-            width: 100%;
-            background: #1a73e8;
-            color: #ffffff;
-            border: none;
-            border-radius: 4px;
-            padding: 12px;
-            font-size: 14px;
-            font-weight: 500;
-            font-family: 'Roboto', sans-serif;
-            cursor: pointer;
-            transition: all 0.15s;
-        }
-
-        .submit-button:hover {
-            background: #1557b0;
-        }
-
-        .submit-button:disabled {
-            background: #dadce0;
-            cursor: not-allowed;
-        }
-
-        .form-hint {
-            font-size: 12px;
-            color: #5f6368;
-            margin-top: 4px;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Roboto', sans-serif; background: #ffffff; color: #202124; }
+        .app-bar { background: #ffffff; border-bottom: 1px solid #e8eaed; padding: 20px 24px; position: sticky; top: 0; z-index: 100; }
+        .app-bar-content { max-width: 1200px; margin: 0 auto; display: flex; align-items: center; gap: 12px; justify-content: space-between; }
+        .app-bar-left { display: flex; align-items: center; gap: 12px; }
+        .logo-icon { color: #1a73e8; font-size: 32px; }
+        .logo { font-size: 22px; font-weight: 400; color: #202124; letter-spacing: -0.5px; }
+        .subtitle { color: #5f6368; font-size: 13px; font-weight: 400; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 32px 24px; }
+        .search-section { background: #ffffff; border-radius: 24px; padding: 24px; margin-bottom: 32px; border: 1px solid #e8eaed; }
+        .search-box { position: relative; margin-bottom: 20px; }
+        .search-input { width: 100%; padding: 14px 14px 14px 48px; font-size: 16px; font-family: 'Roboto', sans-serif; border: 1px solid #dadce0; border-radius: 50px; background: #ffffff; transition: all 0.15s; color: #202124; }
+        .search-input:focus { outline: none; border-color: #1a73e8; box-shadow: 0 1px 6px rgba(32,33,36,0.28); }
+        .search-input::placeholder { color: #5f6368; }
+        .search-icon { position: absolute; left: 16px; top: 50%; transform: translateY(-50%); color: #5f6368; font-size: 20px; }
+        .filters { display: flex; gap: 12px; flex-wrap: wrap; align-items: center; }
+        .chip { padding: 8px 16px; border-radius: 50px; border: 1px solid #dadce0; background: #ffffff; cursor: pointer; font-size: 14px; font-weight: 500; transition: all 0.15s; display: flex; align-items: center; gap: 6px; color: #5f6368; }
+        .chip:hover { background: #f8f9fa; border-color: #dadce0; }
+        .chip.active { background: #e8f0fe; color: #1967d2; border-color: #d2e3fc; }
+        .chip .material-icons-outlined { font-size: 18px; }
+        .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; margin-bottom: 32px; }
+        .stat-card { background: #ffffff; border-radius: 16px; padding: 24px; border: 1px solid #e8eaed; text-align: center; }
+        .stat-number { font-size: 40px; font-weight: 400; color: #1a73e8; line-height: 1.2; }
+        .stat-label { color: #5f6368; font-size: 14px; margin-top: 8px; font-weight: 400; }
+        .libraries-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 16px; }
+        .library-card { background: #ffffff; border-radius: 16px; padding: 20px; border: 1px solid #e8eaed; transition: all 0.15s; cursor: pointer; }
+        .library-card:hover { box-shadow: 0 1px 3px rgba(60,64,67,0.3), 0 4px 8px rgba(60,64,67,0.15); border-color: #dadce0; }
+        .library-card.pending { border-color: #fbbc04; background: #fffbf0; }
+        .library-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 12px; }
+        .library-name { font-size: 18px; font-weight: 500; color: #202124; font-family: 'Roboto Mono', monospace; }
+        .badge { padding: 4px 12px; border-radius: 50px; font-size: 11px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.5px; }
+        .badge-official { background: #e8f0fe; color: #1967d2; }
+        .badge-community { background: #fce8f3; color: #c5221f; }
+        .badge-pending { background: #fef7e0; color: #f9ab00; }
+        .library-description { color: #5f6368; font-size: 14px; line-height: 1.5; margin-bottom: 16px; }
+        .library-meta { display: flex; gap: 16px; font-size: 13px; color: #5f6368; margin-bottom: 12px; }
+        .meta-item { display: flex; align-items: center; gap: 4px; }
+        .meta-item .material-icons-outlined { font-size: 16px; }
+        .keywords { display: flex; flex-wrap: wrap; gap: 6px; }
+        .keyword-chip { padding: 4px 10px; background: #f1f3f4; border-radius: 50px; font-size: 12px; color: #5f6368; }
+        .no-results { text-align: center; padding: 60px 20px; color: #5f6368; }
+        .no-results-icon { font-size: 64px; color: #dadce0; margin-bottom: 16px; }
+        footer { text-align: center; padding: 40px 20px; color: #5f6368; font-size: 14px; }
+        .footer-link { color: #1a73e8; text-decoration: none; font-weight: 500; }
+        .footer-link:hover { text-decoration: underline; }
+        .add-button { background: #1a73e8; color: #ffffff; border: none; border-radius: 50px; padding: 10px 20px; font-size: 14px; font-weight: 500; font-family: 'Roboto', sans-serif; cursor: pointer; display: flex; align-items: center; gap: 6px; transition: all 0.15s; text-decoration: none; }
+        .add-button:hover { background: #1557b0; box-shadow: 0 1px 3px rgba(60,64,67,0.3); }
+        .add-button-outlined { background: transparent; color: #1a73e8; border: 1px solid #dadce0; border-radius: 50px; padding: 8px 16px; font-size: 14px; font-weight: 500; font-family: 'Roboto', sans-serif; cursor: pointer; display: flex; align-items: center; gap: 6px; transition: all 0.15s; text-decoration: none; }
+        .add-button-outlined:hover { background: #f8f9fa; border-color: #1a73e8; }
+        .add-button .material-icons-outlined, .add-button-outlined .material-icons-outlined { font-size: 18px; }
+        .modal-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0, 0, 0, 0.5); display: flex; align-items: center; justify-content: center; z-index: 1000; }
+        .modal { background: #ffffff; border-radius: 24px; padding: 32px; max-width: 600px; width: 90%; max-height: 90vh; overflow-y: auto; box-shadow: 0 8px 32px rgba(0,0,0,0.2); }
+        .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; }
+        .modal-title { font-size: 24px; font-weight: 400; color: #202124; }
+        .close-button { background: none; border: none; cursor: pointer; color: #5f6368; padding: 8px; border-radius: 50%; transition: all 0.15s; }
+        .close-button:hover { background: #f1f3f4; }
+        .form-group { margin-bottom: 20px; }
+        .form-label { display: block; font-size: 14px; font-weight: 500; color: #202124; margin-bottom: 8px; }
+        .form-input, .form-textarea { width: 100%; padding: 14px 16px; font-size: 14px; font-family: 'Roboto', sans-serif; border: 1px solid #dadce0; border-radius: 12px; transition: all 0.15s; }
+        .form-input:focus, .form-textarea:focus { outline: none; border-color: #1a73e8; box-shadow: 0 0 0 3px rgba(26, 115, 232, 0.1); }
+        .form-textarea { resize: vertical; min-height: 120px; font-family: 'Roboto Mono', monospace; }
+        .form-select { width: 100%; padding: 14px 16px; font-size: 14px; font-family: 'Roboto', sans-serif; border: 1px solid #dadce0; border-radius: 12px; background: #ffffff; cursor: pointer; }
+        .submit-button { width: 100%; background: #1a73e8; color: #ffffff; border: none; border-radius: 50px; padding: 14px; font-size: 14px; font-weight: 500; font-family: 'Roboto', sans-serif; cursor: pointer; transition: all 0.15s; }
+        .submit-button:hover { background: #1557b0; box-shadow: 0 2px 8px rgba(26,115,232,0.3); }
+        .submit-button:disabled { background: #dadce0; cursor: not-allowed; }
+        .form-hint { font-size: 12px; color: #5f6368; margin-top: 6px; }
+        .loading { text-align: center; padding: 40px; color: #5f6368; }
     </style>
 </head>
 <body>
     <div id="root"></div>
-
     <script type="text/babel">
-        const { useState } = React;
-
-        const libraries = [
-            { name: 'core', type: 'official', description: 'Core types and functions', keywords: ['core', 'basic', 'fundamental'], author: 'Yorl Official' },
-            { name: 'image', type: 'official', description: 'Image processing and manipulation', keywords: ['image', 'graphics', 'photo'], author: 'Yorl Official' },
-            { name: 'data', type: 'official', description: 'Data structures and operations', keywords: ['data', 'array', 'dict'], author: 'Yorl Official' },
-            { name: 'ai', type: 'official', description: 'AI and machine learning', keywords: ['ai', 'ml', 'neural', 'model'], author: 'Yorl Official' },
-            { name: 'network', type: 'official', description: 'TCP/UDP networking and protocols', keywords: ['network', 'tcp', 'udp', 'socket'], author: 'Yorl Official' },
-            { name: 'crypto', type: 'official', description: 'Cryptography and security', keywords: ['crypto', 'encryption', 'hash', 'security'], author: 'Yorl Official' },
-            { name: 'file', type: 'official', description: 'File I/O and compression', keywords: ['file', 'io', 'read', 'write', 'compress'], author: 'Yorl Official' },
-            { name: 'json', type: 'official', description: 'JSON parsing and serialization', keywords: ['json', 'parse', 'serialize'], author: 'Yorl Official' },
-            { name: 'xml', type: 'official', description: 'XML parsing and generation', keywords: ['xml', 'parse', 'dom', 'xpath'], author: 'Yorl Official' },
-            { name: 'datetime', type: 'official', description: 'Date and time operations', keywords: ['date', 'time', 'datetime', 'timestamp'], author: 'Yorl Official' },
-            { name: 'math', type: 'official', description: 'Advanced mathematical operations', keywords: ['math', 'algebra', 'geometry', 'calculus'], author: 'Yorl Official' },
-            { name: 'string', type: 'official', description: 'String manipulation and utilities', keywords: ['string', 'text', 'manipulation'], author: 'Yorl Official' },
-            { name: 'array', type: 'official', description: 'Array operations and utilities', keywords: ['array', 'list', 'collection'], author: 'Yorl Official' },
-            { name: 'regex', type: 'official', description: 'Regular expression operations', keywords: ['regex', 'pattern', 'match'], author: 'Yorl Official' },
-            { name: 'audio', type: 'official', description: 'Audio processing and manipulation', keywords: ['audio', 'sound', 'music', 'wav'], author: 'Yorl Official' },
-            { name: 'video', type: 'official', description: 'Video processing and manipulation', keywords: ['video', 'movie', 'mp4', 'codec'], author: 'Yorl Official' },
-            { name: 'graphics', type: 'official', description: '2D/3D graphics and rendering', keywords: ['graphics', 'render', '2d', '3d'], author: 'Yorl Official' },
-            { name: 'testing', type: 'official', description: 'Testing and assertion utilities', keywords: ['test', 'assert', 'mock', 'unit'], author: 'Yorl Official' },
-            { name: 'logging', type: 'official', description: 'Logging and monitoring utilities', keywords: ['log', 'logger', 'debug', 'monitor'], author: 'Yorl Official' },
-            { name: 'web', type: 'community', description: 'HTTP/WebSocket/REST APIs', keywords: ['web', 'http', 'websocket', 'rest', 'api'], author: 'Yorl Community' },
-            { name: 'database', type: 'community', description: 'SQL/NoSQL database operations', keywords: ['database', 'sql', 'nosql', 'query'], author: 'Yorl Community' }
-        ];
+        const { useState, useEffect } = React;
 
         function App() {
             const [search, setSearch] = useState('');
             const [filter, setFilter] = useState('all');
             const [showModal, setShowModal] = useState(false);
+            const [libraries, setLibraries] = useState([]);
+            const [pendingLibraries, setPendingLibraries] = useState([]);
+            const [loading, setLoading] = useState(true);
             const [formData, setFormData] = useState({
-                name: '',
-                description: '',
-                keywords: '',
-                author: '',
-                type: 'community',
-                code: ''
+                name: '', description: '', keywords: '', author: '', type: 'community', code: ''
             });
 
-            const filtered = libraries.filter(lib => {
+            useEffect(() => {
+                fetchLibraries();
+                fetchPendingPRs();
+                const interval = setInterval(() => {
+                    fetchLibraries();
+                    fetchPendingPRs();
+                }, 60000);
+                return () => clearInterval(interval);
+            }, []);
+
+            const fetchLibraries = async () => {
+                try {
+                    const [opensrcRes, usrsrRes] = await Promise.all([
+                        fetch('https://api.github.com/repos/yorldbol/yorldbol.github.io/contents/opensrc'),
+                        fetch('https://api.github.com/repos/yorldbol/yorldbol.github.io/contents/usrsr')
+                    ]);
+                    const opensrc = await opensrcRes.json();
+                    const usrsr = await usrsrRes.json();
+                    
+                    const libs = [];
+                    if (Array.isArray(opensrc)) {
+                        opensrc.filter(f => f.name.endsWith('.ybuiltin')).forEach(f => {
+                            libs.push({ name: f.name.replace('.ybuiltin', ''), type: 'official', description: 'Official library', keywords: [], author: 'Yorl Official', url: f.html_url });
+                        });
+                    }
+                    if (Array.isArray(usrsr)) {
+                        usrsr.filter(f => f.name.endsWith('.ybuiltin')).forEach(f => {
+                            libs.push({ name: f.name.replace('.ybuiltin', ''), type: 'community', description: 'Community library', keywords: [], author: 'Community', url: f.html_url });
+                        });
+                    }
+                    setLibraries(libs);
+                    setLoading(false);
+                } catch (error) {
+                    console.error('Error fetching libraries:', error);
+                    setLoading(false);
+                }
+            };
+
+            const fetchPendingPRs = async () => {
+                try {
+                    const res = await fetch('https://api.github.com/repos/yorldbol/yorldbol.github.io/pulls?state=open');
+                    const prs = await res.json();
+                    const pending = [];
+                    if (Array.isArray(prs)) {
+                        prs.forEach(pr => {
+                            const match = pr.title.match(/New Library: (.+)/);
+                            if (match) {
+                                pending.push({ name: match[1], type: 'pending', description: 'Pending review', keywords: ['pending'], author: pr.user.login, url: pr.html_url });
+                            }
+                        });
+                    }
+                    setPendingLibraries(pending);
+                } catch (error) {
+                    console.error('Error fetching PRs:', error);
+                }
+            };
+
+            const allLibraries = [...libraries, ...pendingLibraries];
+            const filtered = allLibraries.filter(lib => {
                 const matchesFilter = filter === 'all' || lib.type === filter;
-                const matchesSearch = search === '' || 
-                    lib.name.toLowerCase().includes(search.toLowerCase()) ||
-                    lib.description.toLowerCase().includes(search.toLowerCase()) ||
-                    lib.keywords.some(k => k.toLowerCase().includes(search.toLowerCase()));
+                const matchesSearch = search === '' || lib.name.toLowerCase().includes(search.toLowerCase()) || lib.description.toLowerCase().includes(search.toLowerCase());
                 return matchesFilter && matchesSearch;
             });
 
             const stats = {
                 total: libraries.length,
                 official: libraries.filter(l => l.type === 'official').length,
-                community: libraries.filter(l => l.type === 'community').length
+                community: libraries.filter(l => l.type === 'community').length,
+                pending: pendingLibraries.length
             };
 
-            const handleSubmit = (e) => {
+            const handleSubmit = async (e) => {
                 e.preventDefault();
+                const fileName = `${formData.name}.ybuiltin`;
+                const content = btoa(formData.code);
+                const branch = `add-library-${formData.name}-${Date.now()}`;
                 
-                const issueTitle = `New Library: ${formData.name}`;
-                const issueBody = `## New Library Submission
+                try {
+                    const token = prompt('Enter your GitHub Personal Access Token (with repo permissions):');
+                    if (!token) return;
 
-**Name:** ${formData.name}
-**Description:** ${formData.description}
-**Keywords:** ${formData.keywords}
-**Author:** ${formData.author}
-**Type:** ${formData.type}
+                    await fetch(`https://api.github.com/repos/yorldbol/yorldbol.github.io/git/refs`, {
+                        method: 'POST',
+                        headers: { 'Authorization': `token ${token}`, 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ ref: `refs/heads/${branch}`, sha: (await (await fetch('https://api.github.com/repos/yorldbol/yorldbol.github.io/git/refs/heads/main')).json()).object.sha })
+                    });
 
-**Code:**
-\`\`\`
-${formData.code}
-\`\`\`
+                    await fetch(`https://api.github.com/repos/yorldbol/yorldbol.github.io/contents/${formData.type === 'official' ? 'opensrc' : 'usrsr'}/${fileName}`, {
+                        method: 'PUT',
+                        headers: { 'Authorization': `token ${token}`, 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ message: `Add ${formData.name} library`, content, branch })
+                    });
 
----
-Submitted via yorldbol.github.io`;
+                    await fetch(`https://api.github.com/repos/yorldbol/yorldbol.github.io/pulls`, {
+                        method: 'POST',
+                        headers: { 'Authorization': `token ${token}`, 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ title: `New Library: ${formData.name}`, head: branch, base: 'main', body: `**Description:** ${formData.description}\n**Keywords:** ${formData.keywords}\n**Author:** ${formData.author}` })
+                    });
 
-                const url = `https://github.com/yorldbol/yorldbol.github.io/issues/new?title=${encodeURIComponent(issueTitle)}&body=${encodeURIComponent(issueBody)}`;
-                window.open(url, '_blank');
-                setShowModal(false);
-                setFormData({
-                    name: '',
-                    description: '',
-                    keywords: '',
-                    author: '',
-                    type: 'community',
-                    code: ''
-                });
+                    alert('Library submitted successfully! It will be reviewed and auto-merged if it passes validation.');
+                    setShowModal(false);
+                    setFormData({ name: '', description: '', keywords: '', author: '', type: 'community', code: '' });
+                    fetchPendingPRs();
+                } catch (error) {
+                    alert('Error submitting library. Please try again or submit manually via GitHub.');
+                }
             };
 
             const handleInputChange = (e) => {
-                setFormData({
-                    ...formData,
-                    [e.target.name]: e.target.value
-                });
+                setFormData({ ...formData, [e.target.name]: e.target.value });
             };
 
             return (
@@ -582,69 +220,41 @@ Submitted via yorldbol.github.io`;
                                     <div className="subtitle">Database of Official Libraries</div>
                                 </div>
                             </div>
-                            <a 
-                                href="#"
-                                className="add-button-outlined"
-                                onClick={(e) => {
-                                    e.preventDefault();
-                                    setShowModal(true);
-                                }}
-                            >
+                            <a href="#" className="add-button-outlined" onClick={(e) => { e.preventDefault(); setShowModal(true); }}>
                                 <span className="material-icons-outlined">add</span>
                                 Add
                             </a>
                         </div>
                     </div>
-
                     <div className="container">
                         <div className="search-section">
                             <div className="search-box">
                                 <span className="material-icons-outlined search-icon">search</span>
-                                <input
-                                    type="text"
-                                    className="search-input"
-                                    placeholder="Search libraries..."
-                                    value={search}
-                                    onChange={(e) => setSearch(e.target.value)}
-                                />
+                                <input type="text" className="search-input" placeholder="Search libraries..." value={search} onChange={(e) => setSearch(e.target.value)} />
                             </div>
                             <div className="filters">
-                                <div 
-                                    className={`chip ${filter === 'all' ? 'active' : ''}`}
-                                    onClick={() => setFilter('all')}
-                                >
+                                <div className={`chip ${filter === 'all' ? 'active' : ''}`} onClick={() => setFilter('all')}>
                                     <span className="material-icons-outlined">apps</span>
                                     All Libraries
                                 </div>
-                                <div 
-                                    className={`chip ${filter === 'official' ? 'active' : ''}`}
-                                    onClick={() => setFilter('official')}
-                                >
+                                <div className={`chip ${filter === 'official' ? 'active' : ''}`} onClick={() => setFilter('official')}>
                                     <span className="material-icons-outlined">verified</span>
                                     Official
                                 </div>
-                                <div 
-                                    className={`chip ${filter === 'community' ? 'active' : ''}`}
-                                    onClick={() => setFilter('community')}
-                                >
+                                <div className={`chip ${filter === 'community' ? 'active' : ''}`} onClick={() => setFilter('community')}>
                                     <span className="material-icons-outlined">people</span>
                                     Community
                                 </div>
-                                <a 
-                                    href="#"
-                                    className="add-button"
-                                    onClick={(e) => {
-                                        e.preventDefault();
-                                        setShowModal(true);
-                                    }}
-                                    style={{marginLeft: 'auto'}}
-                                >
+                                <div className={`chip ${filter === 'pending' ? 'active' : ''}`} onClick={() => setFilter('pending')}>
+                                    <span className="material-icons-outlined">schedule</span>
+                                    Pending
+                                </div>
+                                <a href="#" className="add-button" onClick={(e) => { e.preventDefault(); setShowModal(true); }} style={{marginLeft: 'auto'}}>
                                     <span className="material-icons-outlined">add</span>
                                     Add
                                 </a>
                             </div>
                         </div>
-
                         <div className="stats-grid">
                             <div className="stat-card">
                                 <div className="stat-number">{stats.total}</div>
@@ -658,9 +268,14 @@ Submitted via yorldbol.github.io`;
                                 <div className="stat-number">{stats.community}</div>
                                 <div className="stat-label">Community</div>
                             </div>
+                            <div className="stat-card">
+                                <div className="stat-number">{stats.pending}</div>
+                                <div className="stat-label">Pending Review</div>
+                            </div>
                         </div>
-
-                        {filtered.length === 0 ? (
+                        {loading ? (
+                            <div className="loading">Loading libraries...</div>
+                        ) : filtered.length === 0 ? (
                             <div className="no-results">
                                 <div className="material-icons-outlined no-results-icon">search_off</div>
                                 <div>No libraries found matching your search</div>
@@ -668,16 +283,10 @@ Submitted via yorldbol.github.io`;
                         ) : (
                             <div className="libraries-grid">
                                 {filtered.map(lib => (
-                                    <div 
-                                        key={lib.name}
-                                        className="library-card"
-                                        onClick={() => window.open(`https://github.com/Arthurc1Moude/yorl-dbol/blob/main/${lib.type === 'official' ? 'opensrc' : 'usrsr'}/${lib.name}.ybuiltin`, '_blank')}
-                                    >
+                                    <div key={lib.name} className={`library-card ${lib.type === 'pending' ? 'pending' : ''}`} onClick={() => window.open(lib.url, '_blank')}>
                                         <div className="library-header">
                                             <div className="library-name">{lib.name}</div>
-                                            <div className={`badge badge-${lib.type}`}>
-                                                {lib.type}
-                                            </div>
+                                            <div className={`badge badge-${lib.type}`}>{lib.type}</div>
                                         </div>
                                         <div className="library-description">{lib.description}</div>
                                         <div className="library-meta">
@@ -685,39 +294,29 @@ Submitted via yorldbol.github.io`;
                                                 <span className="material-icons-outlined">person</span>
                                                 {lib.author}
                                             </div>
-                                            <div className="meta-item">
-                                                <span className="material-icons-outlined">label</span>
-                                                v1.0.0
+                                        </div>
+                                        {lib.keywords.length > 0 && (
+                                            <div className="keywords">
+                                                {lib.keywords.map(keyword => (
+                                                    <span key={keyword} className="keyword-chip">{keyword}</span>
+                                                ))}
                                             </div>
-                                        </div>
-                                        <div className="keywords">
-                                            {lib.keywords.map(keyword => (
-                                                <span key={keyword} className="keyword-chip">{keyword}</span>
-                                            ))}
-                                        </div>
+                                        )}
                                     </div>
                                 ))}
                             </div>
                         )}
-
                         <footer>
                             <p>
-                                <a href="https://yorldbol.github.io" className="footer-link" target="_blank">
-                                    yorldbol.github.io
-                                </a>
+                                <a href="https://yorldbol.github.io" className="footer-link" target="_blank">yorldbol.github.io</a>
                                 {' • '}
-                                <a href="https://github.com/yorldbol/yorldbol.github.io" className="footer-link" target="_blank">
-                                    GitHub
-                                </a>
+                                <a href="https://github.com/yorldbol/yorldbol.github.io" className="footer-link" target="_blank">GitHub</a>
                                 {' • '}
-                                <a href="https://github.com/Arthurc1Moude/yorl" className="footer-link" target="_blank">
-                                    Yorl Main Repository
-                                </a>
+                                <a href="https://github.com/Arthurc1Moude/yorl" className="footer-link" target="_blank">Yorl Main Repository</a>
                             </p>
                             <p style={{marginTop: 8}}>Built with React and Material Design</p>
                         </footer>
                     </div>
-
                     {showModal && (
                         <div className="modal-overlay" onClick={() => setShowModal(false)}>
                             <div className="modal" onClick={(e) => e.stopPropagation()}>
@@ -730,80 +329,34 @@ Submitted via yorldbol.github.io`;
                                 <form onSubmit={handleSubmit}>
                                     <div className="form-group">
                                         <label className="form-label">Library Name *</label>
-                                        <input
-                                            type="text"
-                                            name="name"
-                                            className="form-input"
-                                            value={formData.name}
-                                            onChange={handleInputChange}
-                                            required
-                                            placeholder="e.g., mylib"
-                                        />
+                                        <input type="text" name="name" className="form-input" value={formData.name} onChange={handleInputChange} required placeholder="e.g., mylib" />
                                     </div>
                                     <div className="form-group">
                                         <label className="form-label">Description *</label>
-                                        <input
-                                            type="text"
-                                            name="description"
-                                            className="form-input"
-                                            value={formData.description}
-                                            onChange={handleInputChange}
-                                            required
-                                            placeholder="Brief description of your library"
-                                        />
+                                        <input type="text" name="description" className="form-input" value={formData.description} onChange={handleInputChange} required placeholder="Brief description of your library" />
                                     </div>
                                     <div className="form-group">
                                         <label className="form-label">Keywords *</label>
-                                        <input
-                                            type="text"
-                                            name="keywords"
-                                            className="form-input"
-                                            value={formData.keywords}
-                                            onChange={handleInputChange}
-                                            required
-                                            placeholder="keyword1, keyword2, keyword3"
-                                        />
+                                        <input type="text" name="keywords" className="form-input" value={formData.keywords} onChange={handleInputChange} required placeholder="keyword1, keyword2, keyword3" />
                                         <div className="form-hint">Comma-separated keywords</div>
                                     </div>
                                     <div className="form-group">
                                         <label className="form-label">Author *</label>
-                                        <input
-                                            type="text"
-                                            name="author"
-                                            className="form-input"
-                                            value={formData.author}
-                                            onChange={handleInputChange}
-                                            required
-                                            placeholder="Your name or organization"
-                                        />
+                                        <input type="text" name="author" className="form-input" value={formData.author} onChange={handleInputChange} required placeholder="Your name or organization" />
                                     </div>
                                     <div className="form-group">
                                         <label className="form-label">Type *</label>
-                                        <select
-                                            name="type"
-                                            className="form-select"
-                                            value={formData.type}
-                                            onChange={handleInputChange}
-                                        >
+                                        <select name="type" className="form-select" value={formData.type} onChange={handleInputChange}>
                                             <option value="community">Community</option>
                                             <option value="official">Official (requires approval)</option>
                                         </select>
                                     </div>
                                     <div className="form-group">
                                         <label className="form-label">Library Code *</label>
-                                        <textarea
-                                            name="code"
-                                            className="form-textarea"
-                                            value={formData.code}
-                                            onChange={handleInputChange}
-                                            required
-                                            placeholder="Paste your .ybuiltin code here..."
-                                            rows="8"
-                                        />
+                                        <textarea name="code" className="form-textarea" value={formData.code} onChange={handleInputChange} required placeholder="Paste your .ybuiltin code here..." rows="8" />
+                                        <div className="form-hint">Will be auto-validated for grammar, forbidden words, and structure</div>
                                     </div>
-                                    <button type="submit" className="submit-button">
-                                        Submit Library
-                                    </button>
+                                    <button type="submit" className="submit-button">Submit Library</button>
                                 </form>
                             </div>
                         </div>
@@ -811,7 +364,6 @@ Submitted via yorldbol.github.io`;
                 </>
             );
         }
-
         ReactDOM.render(<App />, document.getElementById('root'));
     </script>
 </body>
